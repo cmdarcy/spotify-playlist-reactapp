@@ -1,13 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Tracklist from "./components/tracklist/tracklist";
+import Playlist from "./components/playlist/playlist";
+import SaveToSpotify from "./components/saveToSpotify/SaveToSpotifyBtn";
+import SearchBar from "./components/searchBar/SearchBar";
+import SearchBtn from "./components/searchBtn/SearchBtn";
+import SearchResults from "./components/searchResults/SearchResults";
 
 function App() {
 	return (
 		<div className="App">
-			<header className="App-header">
-				<Tracklist />
-			</header>
+			<div className="App-header">
+				<h1>Spotify Playlist Creator</h1>
+			</div>
+			<div className="App-body">
+				<SearchBar />
+				<SearchBtn />
+				<SearchResults />
+				<Playlist />
+				<SaveToSpotify />
+			</div>
 		</div>
 	);
 }

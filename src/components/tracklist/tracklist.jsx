@@ -1,11 +1,12 @@
 import Track from "../track/track";
+import styles from "./tracklist.module.css";
 
 export default function Tracklist() {
 	return (
-		<ul>
+		<div className={styles.tracklist}>
 			<Track />
 			<Track />
 			<Track />
-		</ul>
+		</div>
 	);
 }
