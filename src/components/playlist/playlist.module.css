@@ -1,3 +1,5 @@
-h1 {
+.playListTitle {
 	color: red;
+	background-color: transparent;
+	border: none;
 }

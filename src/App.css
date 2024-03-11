@@ -1,3 +1,7 @@
 .App {
 	background-color: blue;
 }
+
+.App-header {
+	border: cadetblue 5px solid;
+}

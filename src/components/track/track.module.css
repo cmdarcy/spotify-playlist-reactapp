@@ -1,9 +1,14 @@
 .trackTitle {
-	color: blue;
+	color: white;
 	margin: 0em;
 }
 
 .trackArtist {
+	color: rgb(70, 130, 171);
+	margin: 0em;
+}
+
+.trackAlbum {
 	color: rgb(70, 130, 171);
 	margin: 0em;
 }
