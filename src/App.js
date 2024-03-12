@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Playlist from "./components/playlist/playlist";
 import SearchBar from "./components/searchBar/SearchBar";
 import SearchResults from "./components/searchResults/SearchResults";
+import { url } from "./token";
 
 const dummySearchResults = [
 	{
@@ -39,6 +40,30 @@ function App() {
 	const [searchResults, setSearchResults] = useState(dummySearchResults);
 	const [playListTitle, setPlaylistTitle] = useState("Default Playlist Title");
 	const [playListTracks, setPlayListTracks] = useState([]);
+	const [token, setToken] = useState();
+
+	useEffect(() => {
+		const hash = window.location.hash;
+		let token = window.localStorage.getItem("token");
+
+		if (!token && hash) {
+			token = hash
+				.substring(1)
+				.split("&")
+				.find((elem) => elem.startsWith("access_token"))
+				.split("=")[1];
+
+			window.location.hash = "";
+			window.localStorage.setItem("token", token);
+		}
+
+		setToken(token);
+	}, []);
+
+	function logout() {
+		setToken("");
+		window.localStorage.removeItem("token");
+	}
 
 	function addTrackHandler(track) {
 		let exists = false;
@@ -77,6 +102,11 @@ function App() {
 		<div className="App">
 			<div className="App-header">
 				<h1>Spotify Playlist Creator</h1>
+				{token ? (
+					<button onClick={logout}>Logout</button>
+				) : (
+					<a href={`${url}`}>Login to Spotify</a>
+				)}
 			</div>
 			<div className="App-body">
 				<SearchBar />
