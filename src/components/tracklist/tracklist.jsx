@@ -13,6 +13,7 @@ export default function Tracklist({
 				artist={track.artist}
 				album={track.album}
 				key={track.id}
+				uri={track.uri}
 			/>
 			<button onClick={() => buttonHandler(track)}>
 				{searchListButton ? "Add" : "Remove"}

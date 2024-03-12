@@ -10,24 +10,28 @@ const dummySearchResults = [
 		artist: "Pink Floyd",
 		album: "Pink Floyd Album",
 		id: 1,
+		uri: 567,
 	},
 	{
 		title: "Beautiful",
 		artist: "Carole King",
 		album: "Carole King Album",
 		id: 2,
+		uri: 789,
 	},
 	{
 		title: "Bring It On Home to Me",
 		artist: "Sam Cooke",
 		album: "Sam Cooke Album",
 		id: 3,
+		uri: 91011,
 	},
 	{
 		title: "What's Inside",
 		artist: "Waitress Cast",
 		album: "The Waitress Soundtrack",
 		id: 4,
+		uri: 121314,
 	},
 ];
 
@@ -61,6 +65,14 @@ function App() {
 		setPlaylistTitle(e.target.value);
 	}
 
+	function savePlaylistHandler() {
+		const savedPlaylistURI = [];
+		for (let track of playListTracks) {
+			savedPlaylistURI.push(track.uri);
+		}
+		console.log(savedPlaylistURI);
+	}
+
 	return (
 		<div className="App">
 			<div className="App-header">
@@ -78,6 +90,7 @@ function App() {
 					tracks={playListTracks}
 					removeTrack={removeTrackHandler}
 					titleChange={titleChangeHandler}
+					savePlaylist={savePlaylistHandler}
 				/>
 			</div>
 		</div>

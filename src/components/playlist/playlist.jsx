@@ -1,7 +1,13 @@
 import Tracklist from "../tracklist/tracklist";
 import styles from "./playlist.module.css";
 
-export default function Playlist({ title, tracks, removeTrack, titleChange }) {
+export default function Playlist({
+	title,
+	tracks,
+	removeTrack,
+	titleChange,
+	savePlaylist,
+}) {
 	return (
 		<>
 			<input
@@ -15,7 +21,7 @@ export default function Playlist({ title, tracks, removeTrack, titleChange }) {
 				buttonHandler={removeTrack}
 				searchListButton={false}
 			/>
-			<button>Save to Spotify</button>
+			<button onClick={savePlaylist}>Save to Spotify</button>
 		</>
 	);
 }
