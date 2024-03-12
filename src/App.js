@@ -5,46 +5,26 @@ import SearchBar from "./components/searchBar/SearchBar";
 import SearchResults from "./components/searchResults/SearchResults";
 import { url } from "./token";
 
-const dummySearchResults = [
-	{
-		title: "I Wish You Were Here",
-		artist: "Pink Floyd",
-		album: "Pink Floyd Album",
-		id: 1,
-		uri: 567,
-	},
-	{
-		title: "Beautiful",
-		artist: "Carole King",
-		album: "Carole King Album",
-		id: 2,
-		uri: 789,
-	},
-	{
-		title: "Bring It On Home to Me",
-		artist: "Sam Cooke",
-		album: "Sam Cooke Album",
-		id: 3,
-		uri: 91011,
-	},
-	{
-		title: "What's Inside",
-		artist: "Waitress Cast",
-		album: "The Waitress Soundtrack",
-		id: 4,
-		uri: 121314,
-	},
-];
-
 function App() {
-	const [searchResults, setSearchResults] = useState(dummySearchResults);
+	const [searchResults, setSearchResults] = useState([]);
 	const [playListTitle, setPlaylistTitle] = useState("Default Playlist Title");
 	const [playListTracks, setPlayListTracks] = useState([]);
 	const [token, setToken] = useState();
+	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		const hash = window.location.hash;
 		let token = window.localStorage.getItem("token");
+		let timeout = window.localStorage.getItem("timeout");
+
+		if (timeout) {
+			setTimeout(() => {
+				alert("The token expired! Please refresh the page and login again.");
+				setToken("");
+				window.localStorage.removeItem("token");
+				window.localStorage.removeItem("timeout");
+			}, timeout * 1000);
+		}
 
 		if (!token && hash) {
 			token = hash
@@ -52,17 +32,28 @@ function App() {
 				.split("&")
 				.find((elem) => elem.startsWith("access_token"))
 				.split("=")[1];
+			timeout = hash
+				.substring(1)
+				.split("&")
+				.find((elem) => elem.startsWith("expires_in"))
+				.split("=")[1];
 
 			window.location.hash = "";
 			window.localStorage.setItem("token", token);
+			window.localStorage.setItem("timeout", timeout);
 		}
 
 		setToken(token);
 	}, []);
 
+	function login() {
+		window.location = url;
+	}
+
 	function logout() {
 		setToken("");
 		window.localStorage.removeItem("token");
+		window.localStorage.removeItem("timeout");
 	}
 
 	function addTrackHandler(track) {
@@ -98,6 +89,42 @@ function App() {
 		console.log(savedPlaylistURI);
 	}
 
+	function searchInputHandler(e) {
+		setSearchTerm(e.target.value);
+	}
+
+	async function searchButtonHandler() {
+		try {
+			const response = await fetch(
+				`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error("Failed to fetch data");
+			}
+
+			const data = await response.json();
+			setSearchResults(
+				data.tracks.items.map((item) => {
+					return {
+						title: item.name,
+						artist: item.artists[0].name,
+						album: item.album.name,
+						id: item.id,
+						uri: item.uri,
+					};
+				})
+			);
+		} catch (error) {
+			console.log("Error:", error);
+		}
+	}
+
 	return (
 		<div className="App">
 			<div className="App-header">
@@ -105,12 +132,16 @@ function App() {
 				{token ? (
 					<button onClick={logout}>Logout</button>
 				) : (
-					<a href={`${url}`}>Login to Spotify</a>
+					<button onClick={login}>Login</button>
 				)}
 			</div>
 			<div className="App-body">
-				<SearchBar />
-				<button>Search</button>
+				<SearchBar
+					searchTerm={searchTerm}
+					searchInputHandler={searchInputHandler}
+					className="SearchBar"
+				/>
+				{token && <button onClick={searchButtonHandler}>Search</button>}
 				<SearchResults
 					searchResults={searchResults}
 					addTrack={addTrackHandler}

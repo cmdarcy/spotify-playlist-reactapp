@@ -15,7 +15,7 @@ export default function Tracklist({
 				key={track.id}
 				uri={track.uri}
 			/>
-			<button onClick={() => buttonHandler(track)}>
+			<button onClick={() => buttonHandler(track)} key={`button-${track.id}`}>
 				{searchListButton ? "Add" : "Remove"}
 			</button>
 		</>

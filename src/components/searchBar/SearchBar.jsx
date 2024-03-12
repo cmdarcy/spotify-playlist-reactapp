@@ -1,3 +1,3 @@
-export default function SearchBar() {
-	return <input type="text" />;
+export default function SearchBar({ searchTerm, searchInputHandler }) {
+	return <input type="text" value={searchTerm} onChange={searchInputHandler} />;
 }
