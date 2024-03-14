@@ -81,12 +81,76 @@ function App() {
 		setPlaylistTitle(e.target.value);
 	}
 
-	function savePlaylistHandler() {
-		const savedPlaylistURI = [];
-		for (let track of playListTracks) {
-			savedPlaylistURI.push(track.uri);
+	async function savePlaylistHandler() {
+		// Get userID
+		let userId;
+		try {
+			const response = await fetch(`https://api.spotify.com/v1/me`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!response.ok) {
+				throw new Error("Failed to retrieve userId");
+			}
+			const data = await response.json();
+			userId = data.id;
+		} catch (error) {
+			console.log("Error:", error);
 		}
-		console.log(savedPlaylistURI);
+
+		// Add new playlist using userID, store playlistID
+		let playlistID;
+		try {
+			const bodyData = {
+				name: `${playListTitle}`,
+			};
+			const response = await fetch(
+				`https://api.spotify.com/v1/users/${userId}/playlists `,
+				{
+					method: "POST",
+					headers: {
+						"Authorization": `Bearer ${token}`,
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(bodyData),
+				}
+			);
+			if (!response.ok) {
+				throw new Error("Failed to upload new playlist");
+			}
+			const data = await response.json();
+			playlistID = data.id;
+		} catch (error) {
+			console.log("Error:", error);
+		}
+
+		//Gather track uri's
+		const savedPlaylistURIs = [];
+		for (let track of playListTracks) {
+			savedPlaylistURIs.push(track.uri);
+		}
+
+		//Add songs to new playlist
+		try {
+			const bodyData = { uris: savedPlaylistURIs };
+			const response = await fetch(
+				`https://api.spotify.com/v1/playlists/${playlistID}/tracks `,
+				{
+					method: "POST",
+					headers: {
+						"Authorization": `Bearer ${token}`,
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(bodyData),
+				}
+			);
+			if (!response.ok) {
+				throw new Error("Failed to upload new playlist");
+			}
+		} catch (error) {
+			console.log("Error:", error);
+		}
 	}
 
 	function searchInputHandler(e) {
@@ -109,17 +173,21 @@ function App() {
 			}
 
 			const data = await response.json();
-			setSearchResults(
-				data.tracks.items.map((item) => {
-					return {
-						title: item.name,
-						artist: item.artists[0].name,
-						album: item.album.name,
-						id: item.id,
-						uri: item.uri,
-					};
-				})
-			);
+			if (data.tracks.items.length === 0) {
+				alert(`No search results found please try a different search!`);
+			} else {
+				setSearchResults(
+					data.tracks.items.map((item) => {
+						return {
+							title: item.name,
+							artist: item.artists[0].name,
+							album: item.album.name,
+							id: item.id,
+							uri: item.uri,
+						};
+					})
+				);
+			}
 		} catch (error) {
 			console.log("Error:", error);
 		}
