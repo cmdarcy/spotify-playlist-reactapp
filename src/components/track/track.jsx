@@ -2,10 +2,10 @@ import styles from "./track.module.css";
 
 export default function Track({ title, artist, album }) {
 	return (
-		<>
-			<h1 className={styles.trackTitle}>{title}</h1>
-			<h2 className={styles.trackArtist}>{artist}</h2>
-			<h2 className={styles.trackArtist}>{album}</h2>
-		</>
+		<div className={styles.trackContainer}>
+			<h2 className={styles.trackTitle}>{title}</h2>
+			<h3 className={styles.trackArtist}>{artist}</h3>
+			<h3 className={styles.trackArtist}>{album}</h3>
+		</div>
 	);
 }

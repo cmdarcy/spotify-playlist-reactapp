@@ -7,7 +7,9 @@ import { url } from "./token";
 
 function App() {
 	const [searchResults, setSearchResults] = useState([]);
-	const [playListTitle, setPlaylistTitle] = useState("Default Playlist Title");
+	const [playListTitle, setPlaylistTitle] = useState(
+		"Enter Playlist Title Here"
+	);
 	const [playListTracks, setPlayListTracks] = useState([]);
 	const [token, setToken] = useState();
 	const [searchTerm, setSearchTerm] = useState("");
@@ -195,21 +197,29 @@ function App() {
 
 	return (
 		<div className="App">
-			<div className="App-header">
+			<header className="App-header">
 				<h1>Spotify Playlist Creator</h1>
 				{token ? (
-					<button onClick={logout}>Logout</button>
+					<button onClick={logout} className="logBtn">
+						Logout
+					</button>
 				) : (
-					<button onClick={login}>Login</button>
+					<button onClick={login} className="logBtn">
+						Login
+					</button>
 				)}
-			</div>
-			<div className="App-body">
 				<SearchBar
 					searchTerm={searchTerm}
 					searchInputHandler={searchInputHandler}
 					className="SearchBar"
 				/>
-				{token && <button onClick={searchButtonHandler}>Search</button>}
+				{token && (
+					<button onClick={searchButtonHandler} className="searchBtn">
+						Search
+					</button>
+				)}
+			</header>
+			<div className="App-body">
 				<SearchResults
 					searchResults={searchResults}
 					addTrack={addTrackHandler}

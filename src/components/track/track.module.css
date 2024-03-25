@@ -1,14 +1,14 @@
+.trackContainer {
+	margin-top: 1.5em;
+}
+
 .trackTitle {
-	color: white;
+	color: #f7ef81;
 	margin: 0em;
 }
 
-.trackArtist {
-	color: rgb(70, 130, 171);
-	margin: 0em;
-}
-
+.trackArtist,
 .trackAlbum {
-	color: rgb(70, 130, 171);
+	color: #cac4ce;
 	margin: 0em;
 }

@@ -1,7 +1,59 @@
+/* 
+colors:
+button #20BF55
+h1 #F7EF81
+h2 #CAC4CE
+div #3E7CB1 
+body #054A91 */
+
 .App {
-	background-color: blue;
+	background-color: #054a91;
+}
+
+button {
+	margin-top: 1em;
+	background-color: #20bf55;
+	color: #054a91;
+	border-radius: 25px;
+	border: 2px solid white;
+}
+
+button:hover {
+	background-color: #054a91;
+	color: white;
+}
+
+h1 {
+	color: #f7ef81;
+}
+
+input {
+	border-radius: 25px;
+	border: none;
+	padding: 5px;
 }
 
 .App-header {
-	border: cadetblue 5px solid;
+	display: grid;
+	place-items: center;
+	padding-bottom: 1em;
+}
+
+.logBtn {
+	position: absolute;
+	left: 5px;
+	top: 5px;
+	margin: 0;
+	font-size: 1.15rem;
+}
+
+.searchBtn {
+	font-size: 2rem;
+	min-width: 15%;
+}
+
+.App-body {
+	display: grid;
+	grid-template-rows: auto;
+	grid-template-columns: 1fr 1fr;
 }

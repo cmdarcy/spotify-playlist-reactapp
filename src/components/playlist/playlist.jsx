@@ -9,7 +9,7 @@ export default function Playlist({
 	savePlaylist,
 }) {
 	return (
-		<>
+		<section className={styles.playlistContainer}>
 			<input
 				value={title}
 				onChange={titleChange}
@@ -21,7 +21,9 @@ export default function Playlist({
 				buttonHandler={removeTrack}
 				searchListButton={false}
 			/>
-			<button onClick={savePlaylist}>Save to Spotify</button>
-		</>
+			<button onClick={savePlaylist} className={styles.playlistSavebtn}>
+				Save to Spotify
+			</button>
+		</section>
 	);
 }
