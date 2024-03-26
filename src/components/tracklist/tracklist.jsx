@@ -1,5 +1,4 @@
 import Track from "../track/track";
-import styles from "./tracklist.module.css";
 
 export default function Tracklist({
 	tracklist,
